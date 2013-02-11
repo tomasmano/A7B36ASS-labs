@@ -1,17 +1,17 @@
 package cz.cvut.toxml.model;
 
-import cz.cvut.toxml.annotation.XmlCompostie;
+import cz.cvut.toxml.annotation.XmlComposite;
 
 /**
  *
  * @author Tomas Mano <tomasmano@gmail.com>
  */
-public class Person {
+public class Person extends IdEntity{
 
     private String name;
     private int age;
     
-    @XmlCompostie
+    @XmlComposite
     private Car car;
 
     public Person() {
@@ -23,6 +23,13 @@ public class Person {
         this.car = car;
     }
 
+    public Person(Long id, String name, int age, Car car) {
+        super(id);
+        this.name = name;
+        this.age = age;
+        this.car = car;
+    }
+    
     public String getName() {
         return name;
     }

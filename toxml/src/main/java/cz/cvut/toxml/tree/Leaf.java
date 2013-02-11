@@ -18,7 +18,7 @@ public class Leaf implements Component{
     
     public String print() throws Exception{
         StringBuilder builder = new StringBuilder();
-        builder.append("<").append(field.getName()).append(">").append(field.get(parent)).append("</").append(field.getName()).append(">");
+        builder.append("<").append(field.getName()).append(">").append(field.get(parent)).append("</").append(field.getName()).append(">").append("\n");
         return builder.toString();
     }
 

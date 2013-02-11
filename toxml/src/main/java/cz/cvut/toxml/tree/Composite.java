@@ -11,20 +11,20 @@ public class Composite implements Component{
     
     private Object parent;
     
+    private List<Component> leafs = new ArrayList<Component>();
+    
     public Composite(Object parent) {
         this.parent = parent;
     }
 
-    private List<Component> leafs = new ArrayList<Component>();
-
     public String print() throws Exception{
         StringBuilder builder = new StringBuilder();
         String rootName = parent.getClass().getSimpleName();
-        builder.append("<").append(rootName).append(">");
+        builder.append("<").append(rootName).append(">").append("\n");
         for (Component component : leafs) {
             builder.append(component.print());
         }
-        builder.append("</").append(rootName).append(">");
+        builder.append("</").append(rootName).append(">").append("\n");
         return builder.toString();
     }
     

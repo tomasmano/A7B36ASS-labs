@@ -1,11 +1,7 @@
 package cz.cvut.toxml;
 
-import cz.cvut.toxml.annotation.XmlCompostie;
 import cz.cvut.toxml.model.Car;
 import cz.cvut.toxml.model.Person;
-import cz.cvut.toxml.tree.Composite;
-import cz.cvut.toxml.tree.Leaf;
-import java.lang.reflect.Field;
 
 /**
  * Hello world!
@@ -13,33 +9,21 @@ import java.lang.reflect.Field;
  */
 public class App {
 
+    /**
+     * Testing convertion for Person class to xml.
+     *
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
-        Person person = new Person("tomy", 26, new Car("abc123", "pink"));
-        Composite root = new Composite(person);
+        // example class
+        Person person = new Person(999L, "tomy", 26, new Car("abc123", "pink"));
+        
+        // do conversion
+        String output = ClassToXmlConverter.toXml(person);
 
-        Class clazz = person.getClass();
-        Field[] fields = clazz.getDeclaredFields();
-        populateTree(root, fields, person);
-        System.out.println(root.print());
+        // print to console for testing
+        System.out.println(output);
     }
 
-    public static void populateTree(Composite root, Field[] fields, Object marshalled) throws Exception{
-        for (Field field : fields) {
-            
-            field.setAccessible(true);
-            
-            // is composite?
-            if (field.isAnnotationPresent(XmlCompostie.class)) {
-                Object newMarshaled = field.get(marshalled);
-                Composite newRoot = new Composite(newMarshaled);
-                root.add(newRoot);
-                populateTree(newRoot, newMarshaled.getClass().getDeclaredFields(), newMarshaled);
-            } 
-            // or is simple element?
-            else {
-                root.add(new Leaf(marshalled, field));
-            }
-
-        }
-    }
 }
