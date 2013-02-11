@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<person>
+    <age>12</age>
+    <carSet>
+        <barva>blue</barva>
+        <plate>BBB2343</plate>
+    </carSet>
+    <carSet>
+        <barva>red</barva>
+        <plate>AAA2343</plate>
+    </carSet>
+    <note></note>
+    <fName>Tom</fName>
+    <lName>Cerny</lName>
+</person>
