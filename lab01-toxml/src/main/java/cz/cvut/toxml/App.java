@@ -19,11 +19,17 @@ public class App {
         // example class
         Person person = new Person(999L, "tomy", 26, new Car("abc123", "pink"));
         
-        // do conversion
-        String output = ClassToXmlConverter.toXml(person);
+        // do xml conversion
+        String xmlOutput = ClassConverter.toXml(person);
 
-        // print to console for testing
-        System.out.println(output);
+        // print to the console for testing
+        System.out.println(xmlOutput);
+        
+        // do json conversion
+        String jsonOutput = ClassConverter.toJson(person);
+
+        // print to the console for testing
+        System.out.println(jsonOutput);
     }
 
 }

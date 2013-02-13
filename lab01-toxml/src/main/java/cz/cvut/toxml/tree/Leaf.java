@@ -1,5 +1,6 @@
 package cz.cvut.toxml.tree;
 
+import cz.cvut.toxml.printer.Printer;
 import java.lang.reflect.Field;
 
 /**
@@ -16,10 +17,24 @@ public class Leaf implements Component{
         this.field = field;
     }
     
-    public String print() throws Exception{
-        StringBuilder builder = new StringBuilder();
-        builder.append("<").append(field.getName()).append(">").append(field.get(parent)).append("</").append(field.getName()).append(">").append("\n");
-        return builder.toString();
+    public <E> E print(Printer<E> printer) throws Exception{
+        return printer.print(this);
+    }
+
+    public Object getParent() {
+        return parent;
+    }
+
+    public void setParent(Object parent) {
+        this.parent = parent;
+    }
+
+    public Field getField() {
+        return field;
+    }
+
+    public void setField(Field field) {
+        this.field = field;
     }
 
 }

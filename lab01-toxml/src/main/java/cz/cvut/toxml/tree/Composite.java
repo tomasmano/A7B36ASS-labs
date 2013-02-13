@@ -1,5 +1,6 @@
 package cz.cvut.toxml.tree;
 
+import cz.cvut.toxml.printer.Printer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,18 +18,28 @@ public class Composite implements Component{
         this.parent = parent;
     }
 
-    public String print() throws Exception{
-        StringBuilder builder = new StringBuilder();
-        String rootName = parent.getClass().getSimpleName();
-        builder.append("<").append(rootName).append(">").append("\n");
-        for (Component component : leafs) {
-            builder.append(component.print());
-        }
-        builder.append("</").append(rootName).append(">").append("\n");
-        return builder.toString();
+    public <E> E print(Printer<E> printer) throws Exception{
+        return printer.print(this);
     }
     
     public void add(Component c){
         leafs.add(c);
     }
+
+    public Object getParent() {
+        return parent;
+    }
+
+    public void setParent(Object parent) {
+        this.parent = parent;
+    }
+
+    public List<Component> getLeafs() {
+        return leafs;
+    }
+
+    public void setLeafs(List<Component> leafs) {
+        this.leafs = leafs;
+    }
+    
 }

@@ -1,4 +1,4 @@
-package cz.cvut.toxml.tree.builder;
+package cz.cvut.toxml.tree.factory;
 
 import cz.cvut.toxml.annotation.XmlComposite;
 import cz.cvut.toxml.tree.Composite;
@@ -9,9 +9,10 @@ import java.lang.reflect.Field;
  *
  * @author Tomas Mano <tomasmano@gmail.com>
  */
-public class TreeBuilder {
+public class TreeFactory {
 
-    public TreeBuilder() {
+    private TreeFactory() {
+        // prevent instatiation
     }
 
     /**
@@ -22,7 +23,7 @@ public class TreeBuilder {
      * @param marshalled specified object
      * @throws Exception
      */
-    public Composite buildTree(Composite root, Field[] fields, Object marshalled) throws Exception {
+    public static Composite buildTree(Composite root, Field[] fields, Object marshalled) throws Exception {
         for (Field field : fields) {
 
             field.setAccessible(true);
