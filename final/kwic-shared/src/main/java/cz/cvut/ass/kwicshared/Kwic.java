@@ -21,9 +21,11 @@ public class Kwic {
 
     private static Map<String, List<Integer>> dict = new HashMap<String, List<Integer>>();
     private static int CONTEXT_SIZE = 5;
+    private static String FILE_NAME = "";
 
     public static void main(String[] args) throws Exception {
-        readText(readInputKeyword("Enter file..")); //input.txt
+        FILE_NAME = readInputKeyword("Enter file..");
+        readText(FILE_NAME); //input.txt
         CONTEXT_SIZE = new Integer(readInputKeyword("Set context size (how many words should appear in one line when the given word is found).."));
         while (true) {
             printOutput(readInputKeyword("Enter word.."));
@@ -152,7 +154,7 @@ public class Kwic {
 
     private static List<String> getLines(List<Integer> lineNumbers) throws Exception {
         List<String> lines = new ArrayList<String>();
-        BufferedReader buffReader = new BufferedReader(new FileReader("input.txt"));
+        BufferedReader buffReader = new BufferedReader(new FileReader(FILE_NAME));
         LineNumberReader reader = new LineNumberReader(buffReader);
         int readed = 1;
         for (Integer lineNum : lineNumbers) {
