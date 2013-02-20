@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +23,11 @@ public class Kwic {
     private static Map<String, List<Integer>> dict = new HashMap<String, List<Integer>>();
     private static int CONTEXT_SIZE = 5;
 
+    public static void main(String[] args) throws Exception {
+        readText("input.txt");
+        printOutput("onion");
+    }
+    
     public static void readInputKeyword() {
         System.out.println("Enter word : ");
         try {
@@ -33,21 +37,21 @@ public class Kwic {
             e.printStackTrace();
         }
     }
-    
-    public static void printOutput(String inputKeyWord) throws Exception{
+
+    public static void printOutput(String inputKeyWord) throws Exception {
         String input = inputKeyWord.toLowerCase();
         List<Integer> numLines = dict.get(inputKeyWord);
-        System.out.println("Occurence on lines [Number of times: "+numLines.size()+"x]: "+numLines);
-        System.out.println("Word '"+inputKeyWord+"' is appearing in these contexts: ");
+        System.out.println("Occurence on lines [Number of times: " + numLines.size() + "x]: " + numLines);
+        System.out.println("Word '" + inputKeyWord + "' is appearing in these contexts: ");
         List<String> res = getContext(inputKeyWord);
         for (String out : res) {
             System.out.println(out);
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void readText(String input) throws Exception {
         // setup..
-        BufferedReader buffReader = new BufferedReader(new FileReader("input.txt"));
+        BufferedReader buffReader = new BufferedReader(new FileReader(input));
         Scanner sc;
         LineNumberReader reader = new LineNumberReader(buffReader);
         String line = "";
@@ -70,7 +74,6 @@ public class Kwic {
                 }
             }
         }
-        printOutput("services");
     }
 
     private static List<String> getContext(String word) throws Exception {
@@ -79,47 +82,52 @@ public class Kwic {
             return null;
         }
         List<String> lines = getLines(dict.get(word));
-//        System.out.println("LINES SIZE: "+lines.size());
+
         for (String line : lines) {
             String[] words = line.split(" ");
-//            System.out.println("===============================================================================");
-//            System.out.println("===============================================================================");
-//            System.out.println("LINE: "+line);
-//            System.out.println("----------------------------------------------------------------------------------");
-//            System.out.println("WORDS: "+Arrays.asList(words));
+
             String fullContext = "";
             for (int i = 0; i < words.length; i++) {
 
                 if (words[i].replaceAll("[^A-Za-z]", "").toLowerCase().equals(word)) {
-                    String prefix = "";
-                    int k = i;
-                    int counter = 0;
-                    while (k > 0 && counter < CONTEXT_SIZE) {
-                        prefix = words[k - 1] + " " + prefix;
-                        k--;
-                        counter++;
-                    }
+//            
+                    String prefix = getPrevWords(words, i);
 
-                    // reset counter
-                    counter = 0;
+                    String postfix = getNextWords(words, i);
 
-                    String postfix = "";
-                    int j = i;
-                    while (j < words.length - 1 && counter < CONTEXT_SIZE) {
-                        postfix = postfix + words[j + 1] + " ";
-                        j++;
-                        counter++;
-                    }
                     fullContext = " ..." + prefix + ">>[" + words[i] + "]<< " + postfix + "... ";
                     contexts.add(fullContext);
-//                    System.out.println("----------------------------------------------------------------------------");
-//                    System.out.println("CONTEXT: "+fullContext);
+
                     fullContext = "";
                 }
 
             }
         }
         return contexts;
+    }
+
+    private static String getPrevWords(String[] words, int currIndex) {
+        String prefix = "";
+        int k = currIndex;
+        int counter = 0;
+        while (k > 0 && counter < CONTEXT_SIZE) {
+            prefix = words[k - 1] + " " + prefix;
+            k--;
+            counter++;
+        }
+        return prefix;
+    }
+
+    private static String getNextWords(String[] words, int currIndex) {
+        String postfix = "";
+        int counter = 0;
+        int j = currIndex;
+        while (j < words.length - 1 && counter < CONTEXT_SIZE) {
+            postfix = postfix + words[j + 1] + " ";
+            j++;
+            counter++;
+        }
+        return postfix;
     }
 
     private static List<String> getLines(List<Integer> lineNumbers) throws Exception {
@@ -134,7 +142,9 @@ public class Kwic {
             }
             String line = reader.readLine();
             readed++;
-            lines.add(line);
+            if (line != null) {
+                lines.add(line);
+            }
         }
         return lines;
     }
