@@ -23,10 +23,11 @@ public class Kwic {
     private static int CONTEXT_SIZE = 5;
 
     public static void main(String[] args) throws Exception {
-//        readText("input.txt");
-//        printOutput("onion");
-        readText(readInputKeyword("Enter file.."));
-        printOutput(readInputKeyword("Enter word.."));
+        readText(readInputKeyword("Enter file..")); //input.txt
+        CONTEXT_SIZE = new Integer(readInputKeyword("Set context size (how many words should appear in one line when the given word is found).."));
+        while (true) {
+            printOutput(readInputKeyword("Enter word.."));
+        }
     }
 
     public static String readInputKeyword(String heading) {
@@ -88,7 +89,7 @@ public class Kwic {
                 }
             }
             Long end = System.currentTimeMillis();
-            System.out.println("Procesed in: " + (end - start) + "ms ( approx. "+(end - start)/1000+"s)");
+            System.out.println("Procesed in: " + (end - start) + "ms ( approx. " + (end - start) / 1000 + "s)");
         } catch (Exception e) {
             System.out.println(String.format("File [%s] not found", input));
             System.exit(0);
