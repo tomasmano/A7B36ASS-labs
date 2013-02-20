@@ -19,60 +19,79 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class Kwic {
 
-    private static String inputKeyword;
     private static Map<String, List<Integer>> dict = new HashMap<String, List<Integer>>();
     private static int CONTEXT_SIZE = 5;
 
     public static void main(String[] args) throws Exception {
-        readText("input.txt");
-        printOutput("onion");
+//        readText("input.txt");
+//        printOutput("onion");
+        readText(readInputKeyword("Enter file.."));
+        printOutput(readInputKeyword("Enter word.."));
     }
-    
-    public static void readInputKeyword() {
-        System.out.println("Enter word : ");
+
+    public static String readInputKeyword(String heading) {
+        System.out.println(heading);
+        String input = "";
         try {
             BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-            inputKeyword = bufferRead.readLine();
+            input = bufferRead.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return input;
     }
 
     public static void printOutput(String inputKeyWord) throws Exception {
         String input = inputKeyWord.toLowerCase();
         List<Integer> numLines = dict.get(inputKeyWord);
+        if (numLines == null) {
+            System.out.println(String.format("Word [%s] not found..", inputKeyWord));
+            return;
+        }
         System.out.println("Occurence on lines [Number of times: " + numLines.size() + "x]: " + numLines);
         System.out.println("Word '" + inputKeyWord + "' is appearing in these contexts: ");
+        Long start = System.currentTimeMillis();
+        // do magic.. 
         List<String> res = getContext(inputKeyWord);
+        Long end = System.currentTimeMillis();
+        System.out.println("Procesed in: " + (end - start) + "ms");
         for (String out : res) {
             System.out.println(out);
         }
     }
 
     public static void readText(String input) throws Exception {
-        // setup..
-        BufferedReader buffReader = new BufferedReader(new FileReader(input));
-        Scanner sc;
-        LineNumberReader reader = new LineNumberReader(buffReader);
-        String line = "";
+        try {
+            // setup..
+            BufferedReader buffReader = new BufferedReader(new FileReader(input));
+            Scanner sc;
+            LineNumberReader reader = new LineNumberReader(buffReader);
+            String line = "";
 
-        // and loop..
-        while (line != null) {
-            line = reader.readLine();
-            if (!StringUtils.isEmpty(line)) {
-                sc = new Scanner(line);
-                while (sc.hasNext()) {
-                    // remove all non-alphabetic chars and convert to lower case
-                    String word = sc.next().replaceAll("[^A-Za-z]", "").toLowerCase();
-                    if (dict.containsKey(word)) {
-                        // update the existing entry if present
-                        dict.get(word).add(reader.getLineNumber());
-                    } else {
-                        // or add a new word if not present yet
-                        dict.put(word, Lists.newArrayList(reader.getLineNumber()));
+            Long start = System.currentTimeMillis();
+            // and loop..
+            while (line != null) {
+                line = reader.readLine();
+                if (!StringUtils.isEmpty(line)) {
+                    sc = new Scanner(line);
+                    while (sc.hasNext()) {
+                        // remove all non-alphabetic chars and convert to lower case
+                        String word = sc.next().replaceAll("[^A-Za-z]", "").toLowerCase();
+                        if (dict.containsKey(word)) {
+                            // update the existing entry if present
+                            dict.get(word).add(reader.getLineNumber());
+                        } else {
+                            // or add a new word if not present yet
+                            dict.put(word, Lists.newArrayList(reader.getLineNumber()));
+                        }
                     }
                 }
             }
+            Long end = System.currentTimeMillis();
+            System.out.println("Procesed in: " + (end - start) + "ms ( approx. "+(end - start)/1000+"s)");
+        } catch (Exception e) {
+            System.out.println(String.format("File [%s] not found", input));
+            System.exit(0);
         }
     }
 
