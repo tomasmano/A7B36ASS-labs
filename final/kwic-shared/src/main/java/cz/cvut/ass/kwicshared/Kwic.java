@@ -98,7 +98,6 @@ public class Kwic {
         Kwic k = new Kwic("input.txt");
         k.readAndParseInputFile();
         k.circularShiftAndAlphabetization();
-        k.outputAndPrint(); 
-        
+        k.outputAndPrint();         
     }
 }
