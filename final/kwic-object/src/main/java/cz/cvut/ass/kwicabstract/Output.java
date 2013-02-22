@@ -11,13 +11,11 @@ import java.util.Set;
  * @author j
  */
 public class Output {
-    private Shifter shifter;
 
-    public Output(Shifter shifter) {
-        this.shifter = shifter;
+    public Output() {
     }
     
-    public void printOutput() {
+    public void printOutput(Shifter shifter) {
         //benchmarking...
         Long start = System.currentTimeMillis();
         Set<String> context = shifter.getOutput();

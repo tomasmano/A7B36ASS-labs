@@ -13,18 +13,16 @@ import java.util.TreeSet;
  * @author j
  */
 public class Shifter {
-    private Input input;
     private Set<String> output = new TreeSet<String>();
 
-    public Shifter(Input input) {
-        this.input = input;
+    public Shifter() {
     }
     
     /**
      * Cirular permutation of word on each line.
      * Alphabetization done automatically by TreeSet.
      */
-    public void circularShiftAndAlphabetization(){
+    public void circularShiftAndAlphabetization(Input input){
          //benchmarking
         Long start = System.currentTimeMillis();
         StringBuilder sb;
