@@ -1,0 +1,7 @@
+CircularShifter procesed in: 452ms
+Alphabetizer procesed in: 1869ms
+Output procesed in: 1862ms
+CircularShifter procesed in: 7991ms
+CircularShifter procesed in: 6368ms
+Alphabetizer procesed in: 8560ms
+Output procesed in: 8552ms

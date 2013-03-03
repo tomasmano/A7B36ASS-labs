@@ -11,7 +11,7 @@ public class App {
      * @throws Exception 
      */
     public static void main(String[] args) throws Exception {
-        Input i = new Input("tolstoj.txt");
+        Input i = new Input("input.txt");
         Shifter s = new Shifter();
         Output o = new Output();
         i.readAndParseInputFile();
