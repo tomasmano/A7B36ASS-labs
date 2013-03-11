@@ -26,7 +26,8 @@ public class Alphabetizer extends Filter {
     public void filter() {
         try {
             Long start = System.currentTimeMillis();
-            while(input.isInputAvailable() != 0) {
+            waitForAssembly();
+            while(input.isInputAvailable()) {
                 parse();
                 forwardOutput();
                 lines.clear();

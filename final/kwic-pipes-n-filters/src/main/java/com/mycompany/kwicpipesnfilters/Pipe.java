@@ -7,6 +7,8 @@ package com.mycompany.kwicpipesnfilters;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -39,12 +41,13 @@ public class Pipe {
         output.write(b);
     }
     
-    public int isInputAvailable() throws IOException {
-        return input.available();
-    }
-    
-    public void flushOutput() throws IOException {
-        output.flush();
+    public boolean isInputAvailable() {
+        try {
+            return input.available() != 0;
+        } catch (IOException ex) {
+            Logger.getLogger(Pipe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
         
 }

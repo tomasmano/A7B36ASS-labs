@@ -21,15 +21,12 @@ public class Output extends Filter {
     
     @Override
     public void filter() {
-        try {
-            Long start = System.currentTimeMillis();
-            while(input.isInputAvailable() != 0){
-                printOutput();
-            }
-            Benchmarker.saveBenchmark(System.currentTimeMillis() - start, this.getClass());
-        } catch (IOException ex) {
-            Logger.getLogger(Output.class.getName()).log(Level.SEVERE, null, ex);
+        Long start = System.currentTimeMillis();
+        waitForAssembly();
+        while(input.isInputAvailable()){
+            printOutput();
         }
+        Benchmarker.saveBenchmark(System.currentTimeMillis() - start, this.getClass());
     }
 
     private void printOutput() {

@@ -26,10 +26,11 @@ public class CircularShifter extends Filter {
     public void filter() {
         try {
             Long start = System.currentTimeMillis();
-            while(input.isInputAvailable() != 0){
+            waitForAssembly();
+            while(input.isInputAvailable()){
                 parse();
                 createShifts();
-                words = new ArrayList<>();
+                words.clear();
             }
             Benchmarker.saveBenchmark(System.currentTimeMillis() - start, this.getClass());
             output.closeOutput();

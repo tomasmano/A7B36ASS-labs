@@ -4,6 +4,9 @@
  */
 package com.mycompany.kwicpipesnfilters;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author j
@@ -21,8 +24,7 @@ abstract public class Filter implements Runnable{
      * starts new thread
      */
     public void start(){
-        Thread t = new Thread(this);
-        t.start();
+        new Thread(this).start();
     }
 
     /**
@@ -34,8 +36,19 @@ abstract public class Filter implements Runnable{
     }
 
     /**
-     * filters the data, dempends on ancestors own implementation
+     * filters the data, depends on ancestors own implementation
      */
     abstract public void filter();
 
+    @SuppressWarnings("empty-statement")
+    protected void waitForAssembly(){
+        if(input != null)
+            while(!input.isInputAvailable()) {
+            try {
+                wait(10);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Filter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }

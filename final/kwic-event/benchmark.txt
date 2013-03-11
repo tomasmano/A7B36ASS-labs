@@ -1,0 +1,3 @@
+Input procesed in: 144ms
+Shifter procesed in: 1ms
+Output procesed in: 2ms

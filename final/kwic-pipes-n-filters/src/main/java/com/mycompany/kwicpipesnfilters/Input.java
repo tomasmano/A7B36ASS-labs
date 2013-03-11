@@ -16,6 +16,7 @@ import java.util.logging.Logger;
  */
 public class Input extends Filter {
     private InputStream in;    
+    private boolean newLine = true;
 
     public Input(InputStream in, Pipe output) {
         super(null, output);
@@ -24,19 +25,26 @@ public class Input extends Filter {
     
     @Override
     public void filter() {
+        waitForAssembly();
         try {
             Long start = System.currentTimeMillis();
             int c;
             while((c = in.read()) != -1){
                 if((c > 64 && c < 91) || (c > 96 && c < 123) || c == ' ' || c == '\n' || c == '\t'){
                     switch(c) {
+                        case '\n' : if(newLine)
+                                        break;
+                            output.writeOutput((byte) c);
+                            newLine = true;
+                            break;
                         case '\t' : output.writeOutput(' ');
                             break;
                         case '\r' : break;
+                        case ';' : break;
                         default : output.writeOutput((byte) c);
+                            newLine = false;
                             break;
                     }
-                    output.flushOutput();
                 }
             }
             output.writeOutput('\n');
@@ -44,7 +52,6 @@ public class Input extends Filter {
             in.close();
             output.closeOutput();
         } catch (IOException ex) {
-            ex.printStackTrace();
             Logger.getLogger(Input.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
