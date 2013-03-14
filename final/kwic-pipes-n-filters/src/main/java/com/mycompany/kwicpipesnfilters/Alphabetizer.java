@@ -78,6 +78,7 @@ public class Alphabetizer extends Filter {
     }
 
     private void forwardOutput() throws IOException {
+        output.assembled();
         for (String s : lines) {
             for (byte b : s.getBytes()) {
                 output.writeOutput((int) b);

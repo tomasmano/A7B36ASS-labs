@@ -43,22 +43,25 @@ public class CircularShifter extends Filter {
      * parses input bytes into words separated by space, and determines new lines
      */
     private void parse() {
+        boolean newLine = false;
         try {
             int offset = 0;
             byte[] arr = new byte[46];
             int c = 0;
             while((c = input.readInput()) != -1){
-                if(c == ' ' || c == '\n'){
+                if((c == ' ' || c == '\n') && newLine){
                     words.add(new String(arr, 0, offset));
                     offset = 0;
                     if(c == '\n')
                         return;                
                 }
-                else 
+                else {
                     arr[offset++] = (byte) c;
+                    newLine = true;
+                }
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            ex.printStackTrace(System.err);
             Logger.getLogger(CircularShifter.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -84,6 +87,7 @@ public class CircularShifter extends Filter {
      * @param arr 
      */
     private void forwardOutput(String[] arr) {
+        output.assembled();
         try {
             for (String s : arr) {
                 for (byte b : s.getBytes()) {
@@ -93,7 +97,7 @@ public class CircularShifter extends Filter {
             }
             output.writeOutput('\n');
         } catch (IOException ex) {
-            ex.printStackTrace();
+            ex.printStackTrace(System.err);
             Logger.getLogger(CircularShifter.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 public class Pipe {
     private PipedInputStream input;
     private PipedOutputStream output;
+    private boolean assembled = false;
 
     public Pipe() throws IOException {
         input = new PipedInputStream();
@@ -41,13 +42,24 @@ public class Pipe {
         output.write(b);
     }
     
-    public boolean isInputAvailable() {
+    public synchronized boolean isInputAvailable() {
         try {
+            if(!assembled){
+                if (input.available() == 0) {
+                        wait(3000);
+                }          
+                throw new RuntimeException("Filters werent assembled succesfully!");
+            }
             return input.available() != 0;
-        } catch (IOException ex) {
+        } catch (IOException | InterruptedException ex) {
             Logger.getLogger(Pipe.class.getName()).log(Level.SEVERE, null, ex);
+            return assembled;
         }
-        return false;
+    }
+    
+    public synchronized void assembled(){
+        assembled = true;
+        notifyAll();
     }
         
 }

@@ -29,6 +29,7 @@ public class Input extends Filter {
         try {
             Long start = System.currentTimeMillis();
             int c;
+            output.assembled();
             while((c = in.read()) != -1){
                 if((c > 64 && c < 91) || (c > 96 && c < 123) || c == ' ' || c == '\n' || c == '\t'){
                     switch(c) {

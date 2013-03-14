@@ -43,12 +43,6 @@ abstract public class Filter implements Runnable{
     @SuppressWarnings("empty-statement")
     protected void waitForAssembly(){
         if(input != null)
-            while(!input.isInputAvailable()) {
-            try {
-                wait(10);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Filter.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+            input.isInputAvailable();
     }
 }
